@@ -3,15 +3,27 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.x
+      python: 3.8
+    commands:
+      - echo "Installing dependencies or any setup tasks"
 
   pre_build:
     commands:
-
-      - chmod +x install-terraform.sh configure-named-profile.sh apply-terraform.sh # make files executable
-      - ./install-terraform.sh # install terraform
-      - ./configure-named-profile.sh # configure named profile
+      - echo "Executing pre-build steps"
 
   build:
     commands:
-      - ./apply-terraform.sh
+      - echo "Executing build steps"
+
+  post_build:
+    commands:
+      - echo "Executing post-build steps"
+
+artifacts:
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - '/root/.cache/**/*'
+
