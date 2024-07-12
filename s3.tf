@@ -4,7 +4,7 @@ provider "aws" {
 
 # S3 bucket for storing uploaded files
 resource "aws_s3_bucket" "file_storage" {
-  bucket = "buildcode124"
+  bucket = "buildcode123"
 }
 
 # Disable public access block
