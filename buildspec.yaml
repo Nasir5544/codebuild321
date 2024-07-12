@@ -5,7 +5,10 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - echo "Installing dependencies or any setup tasks"
+      - echo "Installing Terraform"
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+      - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - sudo apt-get update && sudo apt-get install terraform
 
   pre_build:
     commands:
@@ -13,7 +16,14 @@ phases:
 
   build:
     commands:
-      - echo "Executing build steps"
+      - echo "Initializing Terraform"
+      - terraform init
+
+      - echo "Planning Terraform changes"
+      - terraform plan -out=tfplan
+
+      - echo "Applying Terraform changes"
+      - terraform apply -auto-approve tfplan
 
   post_build:
     commands:
@@ -26,4 +36,3 @@ artifacts:
 cache:
   paths:
     - '/root/.cache/**/*'
-
