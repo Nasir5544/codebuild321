@@ -5,9 +5,11 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - echo "Updating APT cache and installing gnupg"
+      - echo "Updating APT cache"
       - apt-get clean  # Clean APT cache
-      - apt-get update
+      - apt-get update || apt-get update --fix-missing
+
+      # Install gnupg for GPG key handling
       - apt-get install -y gnupg
 
       # Download and configure HashiCorp GPG key
