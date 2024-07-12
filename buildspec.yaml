@@ -3,36 +3,14 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
-    commands:
-      - echo "Installing Terraform"
-      - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor - > /usr/share/keyrings/hashicorp-archive-keyring.gpg
-      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
-      
+      python: 3.x
 
   pre_build:
     commands:
-      - echo "Executing pre-build steps"
+      - chmod +x install-terraform.sh configure-named-profile.sh apply-terraform.sh # make files executable
+      - ./install-terraform.sh # install terraform
+      - ./configure-named-profile.sh # configure named profile
 
   build:
     commands:
-      - echo "Initializing Terraform"
-      - terraform init
-
-      - echo "Planning Terraform changes"
-      - terraform plan -out=tfplan
-
-      - echo "Applying Terraform changes"
-      - terraform apply -auto-approve tfplan
-
-  post_build:
-    commands:
-      - echo "Executing post-build steps"
-
-artifacts:
-  files:
-    - '**/*'
-
-cache:
-  paths:
-    - '/root/.cache/**/*'
+      - ./apply-terraform.sh
