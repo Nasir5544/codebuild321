@@ -5,21 +5,15 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - echo "Updating APT cache"
-      - apt-get clean  # Clean APT cache
+      # Update Yarn repository key and configuration
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /usr/share/keyrings/yarn-archive-keyring.gpg
+      - echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null
+
+      # Remove sbt repository if it's causing issues
+      - rm -f /etc/apt/sources.list.d/sbt.list
+
+      # Update APT repositories
       - apt-get update || apt-get update --fix-missing
-
-      # Install gnupg for GPG key handling
-      - apt-get install -y gnupg
-
-      # Download and configure HashiCorp GPG key
-      - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-
-      # Add HashiCorp repository to sources list
-      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
-
-      # Update package lists and install Terraform
-      - apt-get update && apt-get install -y terraform
 
   pre_build:
     commands:
