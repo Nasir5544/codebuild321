@@ -5,11 +5,13 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      # Install Terraform
-      - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor - > /usr/share/keyrings/hashicorp-archive-keyring.gpg
-      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
-      - apt-get update
-      - apt-get install terraform -y
+      - echo "Installing Terraform and dependencies"
+      - sudo apt-get update || { echo "Failed to update APT repositories"; exit 1; }
+      - sudo apt-get install -y gnupg || { echo "Failed to install gnupg"; exit 1; }
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor - > /usr/share/keyrings/hashicorp-archive-keyring.gpg || { echo "Failed to download HashiCorp GPG key"; exit 1; }
+      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null || { echo "Failed to add HashiCorp APT repository"; exit 1; }
+      - sudo apt-get update || { echo "Failed to update APT repositories after adding HashiCorp repository"; exit 1; }
+      - sudo apt-get install terraform -y || { echo "Failed to install Terraform"; exit 1; }
 
   pre_build:
     commands:
