@@ -7,8 +7,9 @@ phases:
     commands:
       - echo "Installing Terraform and dependencies"
       - yum install -y yum-utils  # Install yum-utils for managing repositories
-      - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo  # Add HashiCorp repository
-      - yum install -y terraform  # Install Terraform
+      - sudo yum-config-manager --disable hashicorp
+      - sudo yum install -y terraform
+
 
   pre_build:
     commands:
