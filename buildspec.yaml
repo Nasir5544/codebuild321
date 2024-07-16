@@ -7,8 +7,10 @@ phases:
     commands:
       - echo "Installing Terraform and dependencies"
       - yum install -y yum-utils  # Install yum-utils for managing repositories
-      - sudo yum-config-manager --disable hashicorp
+      - sudo yum clean all
+      - sudo yum makecache
       - sudo yum install -y terraform
+
 
 
   pre_build:
