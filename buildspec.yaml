@@ -6,12 +6,9 @@ phases:
       python: 3.8
     commands:
       - echo "Installing Terraform and dependencies"
-      - apt-get update || { echo "Failed to update APT repositories"; exit 1; }
-      - apt-get install -y gnupg || { echo "Failed to install gnupg"; exit 1; }
-      - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor - > /usr/share/keyrings/hashicorp-archive-keyring.gpg || { echo "Failed to download HashiCorp GPG key"; exit 1; }
-      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list > /dev/null || { echo "Failed to add HashiCorp APT repository"; exit 1; }
-      - apt-get update || { echo "Failed to update APT repositories after adding HashiCorp repository"; exit 1; }
-      - apt-get install terraform -y || { echo "Failed to install Terraform"; exit 1; }
+      - yum install -y yum-utils  # Install yum-utils for managing repositories
+      - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo  # Add HashiCorp repository
+      - yum install -y terraform  # Install Terraform
 
   pre_build:
     commands:
