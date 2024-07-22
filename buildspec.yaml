@@ -18,7 +18,7 @@ phases:
   post_build:
     commands:
       - echo Post-build phase...
-      - aws s3 cp output_file.txt s3://your-bucket-name/output_file.txt
+      - aws s3 cp output_file.txt s3://glue-demo-222/output_file.txt
 
 artifacts:
   files:
