@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - pip install -r requirements.txt
+      - echo No additional dependencies to install
   pre_build:
     commands:
       - echo Pre-build phase...
