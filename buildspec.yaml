@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - echo No additional dependencies to install
+      - pip install requests
   pre_build:
     commands:
       - echo Pre-build phase...
@@ -18,7 +18,9 @@ phases:
   post_build:
     commands:
       - echo Post-build phase...
-      - aws s3 cp output_file.txt s3://glue-demo-222/output_file.txt
+      - aws s3 cp script1.py s3://glue-demo-222/script1.py
+      - aws s3 cp script2.py s3://glue-demo-222/script2.py
+      - aws s3 cp script3.py s3://glue-demo-222/script3.py
 
 artifacts:
   files:
