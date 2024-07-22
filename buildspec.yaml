@@ -5,35 +5,22 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - echo "Installing Terraform and dependencies"
-      - yum install -y yum-utils  # Install yum-utils for managing repositories
-      - sudo yum clean all
-      - sudo yum makecache
-      - sudo yum install -y terraform
-
-
-
+      - pip install -r requirements.txt
   pre_build:
     commands:
-      - echo "Executing pre-build steps"
-
+      - echo Pre-build phase...
   build:
     commands:
-      - echo "Running Terraform commands"
-      - terraform --version  # Check Terraform version for verification
-      - terraform init       # Initialize Terraform (if needed)
-      - terraform validate s3.tf  # Validate the Terraform configuration
-      - terraform plan -out=tfplan -input=false s3.tf  # Create an execution plan
-      - terraform apply -auto-approve tfplan  # Apply changes
-
+      - echo Build phase...
+      - python script1.py
+      - python script2.py
+      - python script3.py
   post_build:
     commands:
-      - echo "Executing post-build steps"
+      - echo Post-build phase...
+      - aws s3 cp output_file.txt s3://your-bucket-name/output_file.txt
 
 artifacts:
   files:
     - '**/*'
-
-cache:
-  paths:
-    - '/root/.cache/**/*'
+  discard-paths: yes
